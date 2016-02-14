@@ -9,10 +9,17 @@ var ctrlOthers = require('../controllers/others');
 
 /* Locations pages */
 router.get('/', ctrlLocations.homelist);
-router.get('/location', ctrlLocations.locationInfo);
-router.get('/location/review/new', ctrlLocations.addReview);
+// app_server/controllers/locations.js >> homelist = function(){}
+
+router.get('/location/', ctrlLocations.locationInfo);
+// app_server/controllers/locations.js >> locationInfo = function(){}
+
+router.get('/location/review/new/', ctrlLocations.addReview);
+// app_server/controllers/locations.js >> addReview = function(){}
+
 
 /* Other pages */
 router.get('/about', ctrlOthers.about);
 
 module.exports = router;
+
