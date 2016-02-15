@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// Chapter 5, MongoDB and Mongoose
+require('./app_server/models/db');
+
 var routes = require('./app_server/routes/index'); //index.js
 var users = require('./app_server/routes/users'); //users.js
 
