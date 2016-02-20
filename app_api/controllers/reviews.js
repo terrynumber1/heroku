@@ -10,12 +10,7 @@ module.exports.reviewsCreate = function() {};
 
 // Listing 6.3
 module.exports.reviewsReadOne = function(req, res) {
-
-    // location id 56c6e2abf856c2a4aa02d061
-    // review id 56c6e326f856c2a4aa02d062
-
     console.log("Getting single review");
-
     if (req.params && req.params.locationid && req.params.reviewid) {
         Loc
             .findById(req.params.locationid)
@@ -34,14 +29,7 @@ module.exports.reviewsReadOne = function(req, res) {
                     return;
                 }
                 if (location.reviews && location.reviews.length > 0) {
-                    //review = location.reviews.id(req.params.reviewid);
-                    //review = req.params.reviewid;
-                    //review = location.reviews.id;
-
-                    // HERE
-                    console.log('===============: ' + req.params.reviewid);
-                    console.log('REVIEW ID :' + review);
-
+                    review = location.reviews.id(req.params.reviewid);
                     if (!review) {
                         sendJSONresponse(res, 404, {
                             "message": "reviewid not found"
