@@ -3,7 +3,6 @@ var router = express.Router();
 var ctrlLocations = require('../controllers/locations.js');
 var ctrlReviews = require('../controllers/reviews.js');
 
-// locations
 router.get('/locations', ctrlLocations.locationsListByDistance);
 router.post('/locations', ctrlLocations.locationsCreate);
 router.get('/locations/:locationid', ctrlLocations.locationsReadOne);
