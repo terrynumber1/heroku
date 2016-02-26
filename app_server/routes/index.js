@@ -6,8 +6,16 @@ var ctrlOthers = require('../controllers/others.js');
 // app_server
 /* Locations.js pages */
 router.get('/', ctrlLocations.homelist);
-router.get('/location', ctrlLocations.locationInfo);
-router.get('/location/review/new', ctrlLocations.addReview);
+
+// page 217, bottom of the page, add :locationid
+router.get('/location/:locationid', ctrlLocations.locationInfo);
+
+// page 227, 7.4.1
+router.get('/location/:locationid/reviews/new', ctrlLocations.addReview);
+
+// page 227, 7.4.1
+router.post('/location/:locationid/reviews/new', ctrlLocations.doAddReview);
+
 
 /* Other.js pages */
 router.get('/about', ctrlOthers.about);

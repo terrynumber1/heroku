@@ -36,7 +36,9 @@ var renderHomepage = function (req, res, responseBody) {
 /* GET 'home' page */
 module.exports.homelist = function(req, res) {
     var requestOptions, path;
+
     path = '/api/locations';
+
     requestOptions = {
         url: apiOptions.server + path,
         method: 'GET',
@@ -46,6 +48,18 @@ module.exports.homelist = function(req, res) {
             lat: 51.455041,
             maxDistance: 20
         }
+    };
+
+    var _formatDistance = function (distance) {
+        var numDistance, unit;
+        if (distance > 1) {
+            numDistance = parseFloat(distance).toFixed(1);
+            unit = 'km';
+        } else {
+            numDistance = parseInt(distance * 1000,10);
+            unit = 'm';
+        }
+        return numDistance + unit;
     };
 
     // request(option, callback);
@@ -64,75 +78,88 @@ module.exports.homelist = function(req, res) {
         //console.log('=== JIM DEBUG ===' + body);
     });
 
-    var _formatDistance = function (distance) {
-        var numDistance, unit;
-        if (distance > 1) {
-            numDistance = parseFloat(distance).toFixed(1);
-            unit = 'km';
-        } else {
-            numDistance = parseInt(distance * 1000,10);
-            unit = 'm';
-        }
-        return numDistance + unit;
-    };
-
 };
 
 /* GET 'Location info' page */
 module.exports.locationInfo = function(req, res) {
+
+    var requestOptions, path;
+    path = '/api/locations/' + req.params.locationid; // :locationid
+
+    requestOptions = {
+        url: apiOptions.server + path, // var apiOptions = {server: 'http://localhost:3000'};
+        method: 'GET',
+        json: {}
+    };
+
+    request( requestOptions, function(err, response, body) {
+            var data = body;
+
+            if (response.statusCode === 200) {
+                console.log('HERE --======-----===--= : ' + data.coords);
+                data.coords = {
+                    lng: body.coords[0],
+                    lat: body.coords[1]
+                };
+                renderDetailPage(req, res, data);
+            } else {
+                _showError(req, res, response.statusCode); // page 225, Listing 7.17
+            }
+
+        }
+    );
+
+};
+
+// page 220, Listing 7.14
+var renderDetailPage = function (req, res, locDetail) {
     res.render('location-info.jade', {
-        title: 'Starcups',
+        title: locDetail.name,
         pageHeader: {
-            title: 'Starcups'
+            title: locDetail.name
         },
         sidebar: {
             context: 'is on Loc8r because it has accessible wifi and space to sit down with your laptop and get some work done.',
             callToAction: 'If you\'ve been and you like it - or if you don\'t - please leave a review to help other people just like you.'
         },
-        location: {
-            name: 'Starcups',
-            address: '125 High Street, Reading, RG6 1PS',
-            rating: 3,
-            facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-            coords: {
-                lat: 51.455041,
-                lng: -0.9690884
-            },
-            openingTimes: [{
-                days: 'Monday - Friday',
-                opening: '7:00am',
-                closing: '7:00pm',
-                closed: false
-            }, {
-                days: 'Saturday',
-                opening: '8:00am',
-                closing: '5:00pm',
-                closed: false
-            }, {
-                days: 'Sunday',
-                closed: true
-            }],
-            reviews: [{
-                author: 'Simon Holmes',
-                rating: 5,
-                timestamp: '16 July 2013',
-                reviewText: 'What a great place. I can\'t say enough good things about it.'
-            }, {
-                author: 'Charlie Chaplin',
-                rating: 3,
-                timestamp: '16 June 2013',
-                reviewText: 'It was okay. Coffee wasn\'t great, but the wifi was fast.'
-            }]
-        }
+        location: locDetail
+    });
+};
+
+// page 225, Listing 7.17
+var _showError = function (req, res, status) {
+    var title, content;
+    if (status === 404) {
+        title = '404, page note found';
+        content = "Oh dear, we can't find this page, sorry";
+    } else {
+        title = status + ", something went wrong";
+        content = "Something had gone wrong";
+    }
+
+    res.status(status);
+    res.render('generic-text', {
+        title: title,
+        content: content
     });
 };
 
 /* GET 'Add review' page */
-module.exports.addReview = function(req, res) {
+module.exports.addReview = function (req, res) {
+
+    renderReviewForm(req, res);
+
+};
+
+var renderReviewForm = function (req, res) {
     res.render('location-review-form.jade', {
         title: 'Review Starcups on Loc8r',
-        pageHeader: {
-            title: 'Review Starcups'
-        }
+        pageHeader: { title: 'Review Starcups' }
     });
+};
+
+/* POST a new review */
+module.exports.doAddReview = function (req, res) {
+
+
 };
