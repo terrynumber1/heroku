@@ -45,3 +45,5 @@ db.locations.update({
 // password: i2m2n6fokn8u7ia75gpbgt19n8
 // port: 27335
 // databasename: heroku_l8wns377
+
+// http://wireapp1.herokuapp.com/

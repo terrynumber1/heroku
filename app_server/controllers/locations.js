@@ -70,7 +70,7 @@ module.exports.homelist = function(req, res) {
 
         if ( response.statusCode === 200 && data.length ) {
             for (i=0; i<data.length; i++) {
-                console.log('=== JIM DEBUG === ' + data[i].distance);
+                //console.log('=== JIM DEBUG === ' + data[i].distance);
                 data[i].distance = _formatDistance(data[i].distance);
             }
         }
@@ -83,32 +83,40 @@ module.exports.homelist = function(req, res) {
 /* GET 'Location info' page */
 module.exports.locationInfo = function(req, res) {
 
-    var requestOptions, path;
-    path = '/api/locations/' + req.params.locationid; // :locationid
+    getLocationInfo(req, res, function (req, res, responseData) {
+        renderDetailPage(req, res, responseData);
+    });
 
+};
+
+var getLocationInfo = function (req, res, callback) {
+    var requestOptions, path;
+    path = '/api/locations/' + req.params.locationid;
     requestOptions = {
         url: apiOptions.server + path, // var apiOptions = {server: 'http://localhost:3000'};
         method: 'GET',
         json: {}
     };
 
-    request( requestOptions, function(err, response, body) {
-            var data = body;
+    request(requestOptions, function (err, response, body) {
+        var data = body;
+        if (response.statusCode === 200) {
 
-            if (response.statusCode === 200) {
-                console.log('HERE --======-----===--= : ' + data.coords);
-                data.coords = {
-                    lng: body.coords[0],
-                    lat: body.coords[1]
-                };
-                renderDetailPage(req, res, data);
-            } else {
-                _showError(req, res, response.statusCode); // page 225, Listing 7.17
-            }
+            console.log(body.coords[0]);
+            console.log(body.coords[1]);
 
+            data.coords = {
+                lng: body.coords[0],
+                lat: body.coords[1]
+            };
+
+
+
+            callback(req, res, data);
+        } else {
+            _showError(req, res, response.statusCode); // page 225, listing 7.17
         }
-    );
-
+    });
 };
 
 // page 220, Listing 7.14
@@ -147,19 +155,47 @@ var _showError = function (req, res, status) {
 /* GET 'Add review' page */
 module.exports.addReview = function (req, res) {
 
-    renderReviewForm(req, res);
+    getLocationInfo(req, res, function (req, res, responseData) {
+        renderReviewForm(req, res, responseData);
+    });
 
 };
 
-var renderReviewForm = function (req, res) {
+// page 231, listing 7.20
+var renderReviewForm = function (req, res, locDetail) {
     res.render('location-review-form.jade', {
-        title: 'Review Starcups on Loc8r',
-        pageHeader: { title: 'Review Starcups' }
+        title: 'Review  ' + locDetail.name + ' on Loc8r',
+        pageHeader: { title: 'Review ' + locDetail.name }
     });
 };
 
 /* POST a new review */
 module.exports.doAddReview = function (req, res) {
+    var requestOptions, path, locationid, postdata;
+    locationid = req.params.locationid;
+    path = '/api/locations/' + locationid + '/reviews';
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>   ' + path);
 
+    postdata = {
+        author: req.body.name,
+        rating: parseInt(req.body.rating, 10),
+        reviewText: req.body.review
+    };
+
+    requestOptions = {
+        url: apiOptions.server + path,  // apiOptions.server = 'https://wireapp1.herokuapp.com';
+        method: 'POST',
+        json: postdata
+    };
+
+    console.log('+++++++++++++++++ -----  ' + requestOptions.url);
+
+    request(requestOptions, function(err, response, body) {
+        if (response.statusCode === 201) {
+            res.redirect('/location/' + locationid); // redirect user to homepage
+        } else {
+            _showError(req, res, response.statusCode);
+        }
+    });
 
 };
