@@ -9,21 +9,17 @@ block content
         h1= pageHeader.title
          small &nbsp;#{pageHeader.strapline}
   .row
-    .col-xs-12.col-sm-8
-      .error= message
+    .col-xs-12.col-sm-8(ng-controller="locationListCtrl")
+      .error {{ message }}
       .row.list-group
-        each location in locations
-          .col-xs-12.list-group-item
+          .col-xs-12.list-group-item(ng-repeat="asdf in data.locations")
             h4 
-              a(href="/location/#{location._id}")= location.name
-              small &nbsp;
-                +outputRating(location.rating)
-              span.badge.pull-right.badge-default= location.distance
-                p distance
-            p.address= location.address
+              a(href="/location/{{ asdf._id }} ") {{ asdf.name }}
+              small {{ asdf.rating }}
+              span.badge.pull-right.badge-default {{ asdf.distace }}
+            p.address {{ asdf.address }}
             p
-              each facility in location.facilities
-                span.label.label-warning= facility
-                | &nbsp;
+              span.label.label-warning(ng-repeat=asdf2 in asdf.facilities)
+                | {{ asdf2 }}
     .col-xs-12.col-sm-4 
       p.lead= sidebar
