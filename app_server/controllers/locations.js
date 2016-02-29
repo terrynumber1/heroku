@@ -11,15 +11,6 @@ var renderHomepage = function (req, res, responseBody) {
     // http://localhost:3000
 
     // Listing 7.8 page 213
-    //var message;
-    //if ( !(responseBody instanceof Array) ) { // responseBody is not an array
-    //    message = "API lookup error";
-    //    responseBody = [];
-    //} else {
-    //    if (!responseBody.length) { // responseBody array is empty
-    //        message = "No places found nearby";
-    //    }
-    //}
 
     res.render('locations-list.jade', {
         title: 'Loc8r - find a place to work with wifi',
@@ -28,58 +19,13 @@ var renderHomepage = function (req, res, responseBody) {
             strapline: 'Find places to work with wifi near you!'
         },
         sidebar: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for."
-        //locations: responseBody, // an array of results from the database
         //message: message    // Listing 7.8 page 213
     });
 };
 
 /* GET 'home' page */
 module.exports.homelist = function(req, res) {
-
     renderHomepage(req, res);
-    //var requestOptions, path;
-    //
-    //path = '/api/locations';
-    //
-    //requestOptions = {
-    //    url: apiOptions.server + path,
-    //    method: 'GET',
-    //    json: {},
-    //    qs: {
-    //        lng: -0.9690884,
-    //        lat: 51.455041,
-    //        maxDistance: 20
-    //    }
-    //};
-    //
-    //var _formatDistance = function (distance) {
-    //    var numDistance, unit;
-    //    if (distance > 1) {
-    //        numDistance = parseFloat(distance).toFixed(1);
-    //        unit = 'km';
-    //    } else {
-    //        numDistance = parseInt(distance * 1000,10);
-    //        unit = 'm';
-    //    }
-    //    return numDistance + unit;
-    //};
-    //
-    //// request(option, callback);
-    //// Listing 7.6 page 210
-    //request(requestOptions, function (err, response, body) {
-    //    var i, data;
-    //    data = body;
-    //
-    //    if ( response.statusCode === 200 && data.length ) {
-    //        for (i=0; i<data.length; i++) {
-    //            //console.log('=== JIM DEBUG === ' + data[i].distance);
-    //            data[i].distance = _formatDistance(data[i].distance);
-    //        }
-    //    }
-    //    renderHomepage(req, res, data);
-    //    //console.log('=== JIM DEBUG ===' + body);
-    //});
-
 };
 
 /* GET 'Location info' page */

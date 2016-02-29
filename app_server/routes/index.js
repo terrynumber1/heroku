@@ -4,7 +4,7 @@ var ctrlLocations = require('../controllers/locations.js');
 var ctrlOthers = require('../controllers/others.js');
 
 // app_server
-/* Locations.js pages */
+/* Locations.javascripts pages */
 router.get('/', ctrlLocations.homelist);
 
 // page 217, bottom of the page, add :locationid
@@ -17,7 +17,7 @@ router.get('/location/:locationid/reviews/new', ctrlLocations.addReview);
 router.post('/location/:locationid/reviews/new', ctrlLocations.doAddReview);
 
 
-/* Other.js pages */
+/* Other.javascripts pages */
 router.get('/about', ctrlOthers.about);
 
 module.exports = router;
