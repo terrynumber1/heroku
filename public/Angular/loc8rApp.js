@@ -33,35 +33,105 @@ var ratingStars = function () {
     };
 };
 
-var loc8rData = function () {
-    return [{
-        name: 'Burger Queen',
-        address: '125 High Street, Reading, RG6 1PS',
-        rating: 3,
-        facilities: ['Hot drinks', 'Food', 'Premium wifi'],
-        distance: '0.296456',
-        _id: '5370a35f2536f6785f8dfb6a'
-    }, {
-        name: 'Costy',
-        address: '125 High Street, Reading, RG6 1PS',
-        rating: 5,
-        facilities: ['Hot drinks', 'Food', 'Alcoholic drinks'],
-        distance: '0.7865456',
-        _id: '5370a35f2536f6785f8dfb6a'
-    }];
-};
+// homepage
+var loc8rData = function ($http) {
 
-var locationListCtrl = function ($scope, loc8rData) {
-
-    $scope.data = {
-        locations: loc8rData
+    var locationByCoords = function (lat, lng) {
+        var url1 = '/api/locations?lng=' + lng + '&lat=' + lat + '&maxDistance=20';
+        console.log(url1);
+        return $http.get(url1);
     };
 
+    return {
+        locationByCoords: locationByCoords
+    };
+
+    //return [{
+    //    name: 'Burger Queen',
+    //    address: '125 High Street, Reading, RG6 1PS',
+    //    rating: 3,
+    //    facilities: ['Hot drinks', 'Food', 'Premium wifi'],
+    //    distance: '0.296456',
+    //    _id: '5370a35f2536f6785f8dfb6a'
+    //}, {
+    //    name: 'Costy',
+    //    address: '125 High Street, Reading, RG6 1PS',
+    //    rating: 5,
+    //    facilities: ['Hot drinks', 'Food', 'Alcoholic drinks'],
+    //    distance: '0.7865456',
+    //    _id: '5370a35f2536f6785f8dfb6a'
+    //}];
 };
+
+var locationListCtrl = function ($scope, loc8rData,  geolocation1) {
+
+    $scope.message = "Checking your location";
+
+    // Listing 8.16
+    $scope.getData = function (position) {
+
+        console.log(position);
+
+        //var lat = position.coords.latitude,
+        //    lng = position.coords.longitude;
+
+        var lng = -0.79;
+        var lat = 51.3;
+
+        console.log('lat: ' + lat + ' lng: ' + lng);
+
+        $scope.message = "Searching for nearby places";
+
+        // loc8rData = $http.get()
+        loc8rData
+            .locationByCoords(lat, lng)
+            .success(function (data) {
+                $scope.message = data.length > 0 ? "" : "No locations found";
+                $scope.data = {locations: data};
+            })
+            .error(function (err) {
+                $scope.message = "Sorry, something went wrong";
+            });
+    };
+
+    $scope.showError = function (err) {
+        $scope.$apply(function () {
+            $scope.message = error.message;
+        });
+    };
+
+    $scope.noGeo = function () {
+        $scope.$apply(function () {
+            $scope.message = "Geolocation not supported by this browser.";
+        });
+    };
+
+    geolocation1.getPosition($scope.getData, $scope.showError, $scope.noGeo);
+
+    //$scope.data = {
+    //    locations: loc8rData
+    //};
+
+};
+
+var geolocation1 = function () {
+
+    var getPosition = function (cbSuccess, cbError, cbNoGeo) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(cbSuccess, cbError)
+        } else {
+            cbNoGeo();
+        }
+    };
+
+    return {getPosition: getPosition};
+};
+
 
 angular
     .module('loc8rApp')
     .controller('locationListCtrl', locationListCtrl)
     .filter('formatDistance', formatDistance)
     .directive('ratingStars', ratingStars) // rating-stars in HTML tag
-    .service('loc8rData', loc8rData);
+    .service('loc8rData', loc8rData)
+    .service('geolocation1', geolocation1);
