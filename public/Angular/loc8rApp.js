@@ -72,11 +72,11 @@ var locationListCtrl = function ($scope, loc8rData,  geolocation1) {
 
         console.log(position);
 
-        //var lat = position.coords.latitude,
-        //    lng = position.coords.longitude;
+        var lat = position.coords.latitude,
+            lng = position.coords.longitude;
 
-        var lng = -0.79;
-        var lat = 51.3;
+        //var lng = -0.79,
+        //    lat = 51.3;
 
         console.log('lat: ' + lat + ' lng: ' + lng);
 
