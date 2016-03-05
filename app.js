@@ -24,6 +24,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'app_client'))); // page 278
+
 
 app.use('/', routes); // var routes = require('./app_server/routes/index.javascripts');
 app.use('/api', routesApi); // var routesApi = require('./app_api/routes/index.javascripts');
