@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'app_client'))); // page 278
 
 
 app.use('/', routes); // var routes = require('./app_server/routes/index.javascripts');
-app.use('/api', routesApi); // var routesApi = require('./app_api/routes/index.javascripts');
+//app.use('/api', routesApi); // var routesApi = require('./app_api/routes/index.javascripts');
 // app.use('/users', users);
 
 // catch 404 and forward to error handler
