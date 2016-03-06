@@ -4,8 +4,11 @@ var ctrlLocations = require('../controllers/locations.js');
 var ctrlOthers = require('../controllers/others.js');
 
 // app_server
-/* Locations.javascripts pages */
-router.get('/', ctrlLocations.homelist);
+
+// ctrlOthers = require('../controllers/others.js');
+// module.exports.angularApp = function (req, res)
+router.get('/', ctrlOthers.angularApp);
+
 
 // page 217, bottom of the page, add :locationid
 router.get('/location/:locationid', ctrlLocations.locationInfo);
