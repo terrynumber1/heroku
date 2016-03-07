@@ -6,7 +6,7 @@ module.exports.about = function(req, res) {
     });
 };
 
-// page 281
-module.exports.angularApp = function (req, res) {
-    res.render('layout.jade', {title: 'Loc8r'});
+/* GET Angular SPA page */
+module.exports.angularApp = function(req, res){
+  res.render('layout', { title: 'Loc8r' });
 };

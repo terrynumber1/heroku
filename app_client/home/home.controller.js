@@ -1,54 +1,50 @@
-(function(){
-    angular
-        .module('loc8rApp')
-        .controller('homeCtrl', homeCtrl);
+(function () {
 
-    homeCtrl.$inject = ['$scope', 'loc8rData', 'geolocation']; // 9.4.2 manually inject dependencies to protect against minification
-    function homeCtrl ($scope, loc8rData, geolocation) {
+  angular
+    .module('loc8rApp')
+    .controller('homeCtrl', homeCtrl);
 
-        var vm = this;
+  homeCtrl.$inject = ['$scope', 'loc8rData', 'geolocation'];
+  function homeCtrl ($scope, loc8rData, geolocation) {
+    var vm = this;
+    vm.pageHeader = {
+      title: 'Loc8r',
+      strapline: 'Find places to work with wifi near you!'
+    };
+    vm.sidebar = {
+      content: "Looking for wifi and a seat? Loc8r helps you find places to work when out and about. Perhaps with coffee, cake or a pint? Let Loc8r help you find the place you're looking for."
+    };
+    vm.message = "Checking your location";
 
-        vm.pageHeader = {
-            title: 'Loc8r',
-            strapline: 'Find places to work with wifi near you'
-        };
+    vm.getData = function (position) {
+      var lat = position.coords.latitude,
+          lng = position.coords.longitude;
+      vm.message = "Searching for nearby places";
+      loc8rData.locationByCoords(lat, lng)
+        .success(function(data) {
+          vm.message = data.length > 0 ? "" : "No locations found nearby";
+          vm.data = { locations: data };
+          console.log(vm.data);
+        })
+        .error(function (e) {
+          vm.message = "Sorry, something's gone wrong, please try again later";
+        });
+    };
 
-        vm.sidebar = {
-            content: "Looking for wifi and a etetddddddetete"
-        };
+    vm.showError = function (error) {
+      $scope.$apply(function() {
+        vm.message = error.message;
+      });
+    };
 
-        vm.message = "checking your location";
+    vm.noGeo = function () {
+      $scope.$apply(function() {
+        vm.message = "Geolocation is not supported by this browser.";
+      });
+    };
 
-        vm.getData = function (position) {
-            var lat = position.coords.latitude,
-                lng = position.coords.longitude;
+    geolocation.getPosition(vm.getData,vm.showError,vm.noGeo);
 
-            console.log('lat: ' + lat);
-            console.log('lng: ' + lng);
+  }
 
-            vm.message = "Searching for nearby places";
-            loc8rData.locationByCoords(lat, lng)
-                .success(function(data) {
-                    vm.message = data.length > 0 ? "" : "No locations found nearby";
-                    vm.data = { locations: data };
-
-                    //console.log('sdfsdfsdf: ' + vm.data.locations);
-                })
-                .error(function (e) {
-                    vm.message = "Sorry, something's gone wrong";
-                });
-        };
-        vm.showError = function (error) {
-            $scope.$apply(function() {
-                vm.message = error.message;
-            });
-        };
-        vm.noGeo = function () {
-            $scope.$apply(function() {
-                vm.message = "Geolocation is not supported by this browser.";
-            });
-        };
-        geolocation.getPosition(vm.getData,vm.showError,vm.noGeo);
-
-    }
 })();
