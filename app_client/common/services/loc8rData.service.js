@@ -1,13 +1,16 @@
-angular
-    .module('loc8rApp')
-    .service('loc8rData', loc8rData);
+(function() {
+    angular
+        .module('loc8rApp')
+        .service('loc8rData', loc8rData);
 
-function loc8rData ($http) {
-    var locationByCoords = function (lat, lng) {
-        return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '&maxDistance=20');
-    };
+    loc8rData.$inject = ['$http']; // page 300, manually inject dependencies to protect against minification
+    function loc8rData ($http) {
+        var locationByCoords = function (lat, lng) {
+            return $http.get('/api/locations?lng=' + lng + '&lat=' + lat + '&maxDistance=20');
+        };
 
-    return {
-        locationByCoords: locationByCoords
-    };
-}
+        return {
+            locationByCoords: locationByCoords
+        };
+    }
+})();
