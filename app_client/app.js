@@ -6,6 +6,7 @@
 
     angular.module('loc8rApp', ['ngRoute']);
 
+    // use $routeProvider with ng-view in html file
     function config($routeProvider) {
         $routeProvider
             .when('/', {

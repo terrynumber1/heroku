@@ -6,8 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 require('./app_api/models/db.js');
+var uglifyJs = require('uglify-js');
+var fs = require('fs');
 
-var routes = require('./app_server/routes/index.js');
+//var routes = require('./app_server/routes/index.js');
 var routesApi = require('./app_api/routes/index.js');
 // var users = require('./app_server/routes/users');
 
@@ -16,6 +18,26 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'jade');
+
+// Listing 9.14
+var appClientFiles = [
+    'app_client/app.js',
+    'app_client/home/home.controller.js',
+    'app_client/common/services/geolocation.service.js',
+    'app_client/common/services/loc8rData.service.js',
+    'app_client/common/filters/formatDistance.filter.js',
+    'app_client/common/directives/ratingStars/ratingStars.directive.js'
+];
+
+var uglified = uglifyJs.minify(appClientFiles, { compress: false });
+
+fs.writeFile('public/angular/loc8r.min.js', uglified.code, function (err) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('Script generated and saved: loc8r.min.js');
+    }
+});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -27,7 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client'))); // page 278
 
 
-app.use('/', routes); // var routes = require('./app_server/routes/index.javascripts');
+//app.use('/', routes); // var routes = require('./app_server/routes/index.javascripts');
 app.use('/api', routesApi); // var routesApi = require('./app_api/routes/index.javascripts');
 // app.use('/users', users);
 

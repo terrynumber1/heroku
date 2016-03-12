@@ -1,17 +1,21 @@
-(function() {
-    angular
-        .module('loc8rApp')
-        .service('geolocation', geolocation);
+(
+    function() {
+        angular
+            .module('loc8rApp')
+            .service('geolocation', geolocation);
 
-    function geolocation () {
-        var getPostion = function (cbSucces, cbError, cbNoGeo) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(cbSucces, cbError);
-            } else {
-                cbNoGeo();
-            }
-        };
+        function geolocation() {
+            var getPosition = function (cbSuccess, cbError, cbNoGeo) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(cbSuccess, cbError);
+                } else {
+                    cbNoGeo();
+                }
+            };
 
-        return { getPosition: getPostion };
+            return {
+                getPosition: getPosition
+            };
+        }
     }
-})();
+)();
