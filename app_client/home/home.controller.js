@@ -1,3 +1,6 @@
+// This is a ULR fix for browser older than IE 9, page 314
+if (window.location.pathname != '/') { window.location.href = '/#' + window.location.pathname; }
+
 (
     function() {
         angular
@@ -15,7 +18,7 @@
             };
 
             vm.sidebar = {
-                content: "Looking for wifi and a seat etc etc"
+                content: "Looking for wifi and a seat edddtc etc"
             };
 
             vm.message = "Checking your location";
