@@ -4,7 +4,7 @@
 
 ( function() {
 
-    angular.module('loc8rApp', ['ngRoute', 'ngSanitize']);
+    angular.module('loc8rApp', ['ngRoute', 'ngSanitize', 'ui.bootstrap']);
 
     // use $routeProvider with ng-view in html file
     //function config($routeProvider, $locationProvider) {
@@ -25,6 +25,9 @@
                 templateUrl: '/locationDetail/locationDetail.view.html', // make the HTML file
                 controller: 'locationDetailCtrl',                       // make the controller file
                 controllerAs: 'vm'
+            })
+            .when('/form', {
+                templateUrl: '/reviewModal/reviewModal.view.html'
             })
             .otherwise({redirectTo: '/'});
 
