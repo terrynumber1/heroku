@@ -1,40 +1,43 @@
-(
-    function() {
-        angular
-            .module('loc8rApp')
-            .controller('locationDetailCtrl', locationDetailCtrl);
+(function () {
 
-        locationDetailCtrl.$inject = ['$routeParams', '$modal', 'loc8rData'];
-        function locationDetailCtrl($routeParams, $modal, loc8rData) {
-            var vm = this;
+    angular
+        .module('loc8rApp')
+        .controller('locationDetailCtrl', locationDetailCtrl);
 
-            vm.pageHeader = {
-                title: 'Location detail page'
-            };
+    locationDetailCtrl.$inject = ['$routeParams', '$modal', 'loc8rData'];
+    function locationDetailCtrl ($routeParams, $modal, loc8rData) {
+        var vm = this;
+        vm.locationid = $routeParams.locationid;
 
-            vm.locationid = $routeParams.locationid;
-            console.log(vm.locationid);
+        loc8rData.locationById(vm.locationid)
+            .success(function(data) {
+                vm.data = { location: data };
+                vm.pageHeader = {
+                    title: vm.data.location.name
+                };
 
+                //console.log(vm.data.location.name);
+            })
+            .error(function (e) {
+                console.log(e);
+            });
 
-            loc8rData.locationById(vm.locationid)
-                .success(function (data) {
-                    vm.data = {location: data};
-                    vm.pageHeader = {
-                        title: vm.data.location.name
-                    };
+        vm.popupReviewForm = function () {
+            var modalInstance = $modal.open({
+                templateUrl: '/reviewModal/reviewModal.view.html',
+                controller: 'reviewModalCtrl as vm', // what the fuck is this 'vm' referring too?
+                resolve: {
+                    // listing 10.22, page 337
+                    locationData: function() {
+                        return {
+                            locationid: vm.locationid,
+                            locationName: vm.data.location.name
+                        };
+                    }
+                }
+            });
+        };
 
-                    //console.log(vm.pageHeader.title);
-                    //console.log(data);
-                    //console.log(vm.data);
-                })
-                .error(function (e) {
-                    console.log(e);
-                });
-
-            vm.popupReviewForm = function () {
-                alert('HLKEJFLJKFLJDLJ');
-            };
-
-        }
     }
-)();
+
+})();

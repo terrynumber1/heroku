@@ -26,9 +26,6 @@
                 controller: 'locationDetailCtrl',                       // make the controller file
                 controllerAs: 'vm'
             })
-            .when('/form', {
-                templateUrl: '/reviewModal/reviewModal.view.html'
-            })
             .otherwise({redirectTo: '/'});
 
         // this line of code gets rid of the # in the URL
