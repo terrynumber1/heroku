@@ -14,10 +14,20 @@
                 return $http.get('/api/locations/' + locationid);
             };
 
+            // listing 10.24
+            var addReviewById = function (locationid, data) {
+                console.log('addReviewById');
+                console.log(locationid + ' ' + data);
+                //return $http.post('/api/locations/' + locationid + '/reviews', data);
+            };
+
             return {
                 locationByCoords: locationByCoords,
-                locationById: locationById
+                locationById: locationById,
+                addReviewById: addReviewById
             };
+
         }
     }
 )();
+

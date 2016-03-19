@@ -27,7 +27,9 @@
                 templateUrl: '/reviewModal/reviewModal.view.html',
                 controller: 'reviewModalCtrl as vm', // what the fuck is this 'vm' referring too?
                 resolve: {
+
                     // listing 10.22, page 337
+                    // locationData needs to be inject into reviewModalCtrl
                     locationData: function() {
                         return {
                             locationid: vm.locationid,
