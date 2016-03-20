@@ -16,9 +16,12 @@
 
             // listing 10.24
             var addReviewById = function (locationid, data) {
-                console.log('addReviewById');
-                console.log(locationid + ' ' + data);
-                //return $http.post('/api/locations/' + locationid + '/reviews', data);
+                //console.log('addReviewById');
+                //console.log('HERE!!!!!!!!!!!!!!!!' + locationid + ' ' + data);
+
+                //console.log('/api/locations/' + locationid + '/reviews', data);
+
+                return $http.post('/api/locations/' + locationid + '/reviews', data);
             };
 
             return {

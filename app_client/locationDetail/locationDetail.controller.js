@@ -11,6 +11,7 @@
 
         loc8rData.locationById(vm.locationid)
             .success(function(data) {
+
                 vm.data = { location: data };
                 vm.pageHeader = {
                     title: vm.data.location.name
@@ -38,6 +39,11 @@
                     }
                 }
             });
+
+            modalInstance.result.then( function(data) {
+                vm.data.location.reviews.push(data);
+            });
+
         };
 
     }

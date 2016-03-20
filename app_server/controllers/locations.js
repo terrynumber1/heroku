@@ -58,8 +58,6 @@ var getLocationInfo = function (req, res, callback) {
                 lat: body.coords[1]
             };
 
-
-
             callback(req, res, data);
         } else {
             _showError(req, res, response.statusCode); // page 225, listing 7.17
